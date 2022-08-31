@@ -1,8 +1,9 @@
 body {
-    background-color: ffe6e6;
+    background-image: "https://images.unsplash.com/photo-1619423089884-bc5b70bc4e2c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80";
     align-content: space-between;
 }
 
 h1 {
-    color:darkred ;
+    font-family: "caslon bold", serif;
+    color:darkgreen ;
 }

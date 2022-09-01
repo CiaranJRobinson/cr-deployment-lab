@@ -13,6 +13,74 @@
   <div style="height:700px; width:700px;border:3px solid rgb(14, 86, 27);font:16px/26px Georgia, Garamond, Serif;overflow:auto; background-color: rgb(103, 141, 101, 0.6);"><table>
     <img src="https://secure.img1-fg.wfcdn.com/im/77291689/resize-h600-w600%5Ecompr-r85/9274/92746932/Faux+Snake+Plant+in+Planter.jpg" height="200px" width="100px"><img src="https://secure.img1-fg.wfcdn.com/im/76706640/resize-w480%5Ecompr-r85/1031/103140537/Faux+Evergreen+Plant+in+Cement+Pot.jpg" height="200px"; width="100px">
     <br><button type="button">See All Plants</button>
+<br> <br><br>
+<h1>Add a Plant to the List</h1>
+<form>
+    <input type='text' placeholder='type a plant name here...' />
+    <button>add</button>
+</form>
+<section></section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script>
+    const addForm = document.querySelector('form');
+    const nameInput = document.querySelector('input');
+    const container = document.querySelector('section');
+
+    function putTheThingInTheView(res) {
+        container.innerHTML = ''
+        nameInput.value = ''
+
+        res.data.forEach((plantName, index) => {
+            container.innerHTML += `<p name=${index}>${plantName}</p>`
+        })
+
+        document.querySelectorAll('p').forEach(element => {
+            const theIndexValue = element.getAttribute('name');
+
+            element.addEventListener('click', () => {
+                axios
+                    .delete(`/api/plants/${theIndexValue}`)
+                    .then(res => {
+                        putTheThingInTheView(res)
+                    })
+            })
+        })
+    }
+
+    function submitHandler(evt) {
+        evt.preventDefault();
+
+        axios
+            .post('/api/plants', { name: nameInput.value })
+            .then(res => {
+                putTheThingInTheView(res)
+            })
+            .catch(err => {
+                nameInput.value = ''
+
+                const notif = document.createElement('aside')
+                notif.innerHTML = `<p>${err.response.data}</p>
+                <button class="close">close</button>`
+                document.body.appendChild(notif)
+
+                document.querySelectorAll('.close').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.target.parentNode.remove()
+                    })
+                })
+            })
+    }
+
+    // get student list on initial load
+    axios
+        .get('/api/plants')
+        .then(res => {
+            putTheThingInTheView(res)
+        })
+
+    addForm.addEventListener('submit', submitHandler)
+</script>
   </table>
 </center>
 <script src="/main.js"></script>

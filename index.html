@@ -49,7 +49,7 @@
     }
 
     function submitHandler(evt) {
-        evt.preventDefault();
+      evt.preventDefault();        
 
         axios
             .post('/api/plants', { name: nameInput.value })
@@ -72,7 +72,6 @@
             })
     }
 
-    // get student list on initial load
     axios
         .get('/api/plants')
         .then(res => {
@@ -83,7 +82,7 @@
 </script>
   </table>
 </center>
-<script src="/main.js"></script>
+
 
 </body>
 </html>

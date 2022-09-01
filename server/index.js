@@ -4,6 +4,7 @@ const path = require('path');
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 // include and initialize the rollbar library with your access token
 var Rollbar = require("rollbar");
@@ -32,10 +33,13 @@ app.listen(port, ()=>{
 
 const plants = ['Monstera', 'Snake Plant', 'Golden Fern']
 
+
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/index.html'))
     rollbar.log("Accessed HTML successfully");
 })
+
 
 app.get('/api/plants', (req, res) => {
     rollbar.info("Someone got plants info")
@@ -43,27 +47,28 @@ app.get('/api/plants', (req, res) => {
 })
 
 app.post('/api/plants', (req, res) => {
-   let {name} = req.body
+    console.log(req.body)
+    let {name} = req.body
 
-   const index = plants.findIndex(plant => {
-       return plant === name
-   })
+    const index = plants.findIndex(plant => {
+        return plant === name
+    })
 
-   try {
-       if (index === -1 && name !== '') {
-           plants.push(name)
-           rollbar.log("Plant added successfully", {author: "Ciaran", type: "manual entry"});
-           res.status(200).send(plants)
-       } else if (name === ''){
-            rollbar.error("No plant provided");
-           res.status(400).send('You must enter a plantname.')
-       } else {
+    try {
+        if (index === -1 && name !== '') {
+            plants.push(name)
+            rollbar.log("Plant added successfully", {author: "Ciaran", type: "manual entry"});
+            res.status(200).send(plants)
+        } else if (name === ''){
+        rollbar.error("No plant provided");
+            res.status(400).send('You must enter a plantname.')
+        } else {
             rollbar.error("Plant already exists");
-           res.status(400).send('That plant already exists.')
-       }
-   } catch (err) {
-       console.log(err)
-   }
+            res.status(400).send('That plant already exists.')
+        }
+    } catch (err) {
+        console.log(err)
+    }
 })
 
 app.delete('/api/plants/:index', (req, res) => {

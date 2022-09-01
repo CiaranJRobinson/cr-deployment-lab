@@ -38,15 +38,15 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/plants', (req, res) => {
-    rollbar.info("Someone got student info")
+    rollbar.info("Someone got plants info")
     res.status(200).send(plants)
 })
 
 app.post('/api/plants', (req, res) => {
    let {name} = req.body
 
-   const index = plants.findIndex(student => {
-       return student === name
+   const index = plants.findIndex(plants => {
+       return plants === name
    })
 
    try {

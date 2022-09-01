@@ -45,8 +45,8 @@ app.get('/api/plants', (req, res) => {
 app.post('/api/plants', (req, res) => {
    let {name} = req.body
 
-   const index = plants.findIndex(plants => {
-       return plants === name
+   const index = plants.findIndex(plant => {
+       return plant === name
    })
 
    try {
